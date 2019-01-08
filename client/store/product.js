@@ -1,5 +1,12 @@
 import axios from 'axios'
 
+/*
+  This Redux stuff looks good. But I'd caution against building out too much
+  code before it's needed for a specific feature. Consider creating a React
+  component that needs Redux to do something before actually making Redux do
+  that thing. It'll cut down on the amount of refactoring you'll need to do.
+*/
+
 /**
  * ACTION TYPES
  */

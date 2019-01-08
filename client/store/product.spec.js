@@ -18,6 +18,11 @@ import thunkMiddleware from 'redux-thunk'
 const middlewares = [thunkMiddleware]
 const mockStore = configureMockStore(middlewares)
 
+/*
+  I'm really happy to see tests! Let's also write some tests for API routes
+  and React components when the time comes.
+*/
+
 describe.only('thunk creators', () => {
   let store
   let mockAxios
