@@ -3,37 +3,48 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import IconButton from '@material-ui/core/IconButton'
+import ShoppingCart from '@material-ui/icons/ShoppingCart'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
-  <div>
-    <h1>BOILERMAKER</h1>
-    <nav>
-      {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-        </div>
-      ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-        </div>
-      )}
-    </nav>
-    <hr />
-  </div>
+  <React.Fragment>
+    <AppBar position="static" color="primary">
+      <Toolbar>
+        <Typography variant="h6" color="inherit" noWrap style={{flex: 1}}>
+          Pastabilities
+        </Typography>
+        <Link to="/">
+          <Button>Home</Button>
+        </Link>
+        <Link to="/products">
+          <Button>Catalog</Button>
+        </Link>
+        <Button>Contact</Button>
+        {isLoggedIn ? (
+          <Link to="/home">
+            <Button onClick={handleClick}>Logout</Button>
+          </Link>
+        ) : (
+          <Link to="/login">
+            <Button>Login</Button>
+          </Link>
+        )}
+        <IconButton>
+          <ShoppingCart />
+        </IconButton>
+      </Toolbar>
+    </AppBar>
+  </React.Fragment>
 )
 
-/**
- * CONTAINER
- */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    isAdmin: !!state.user.isAdmin
   }
 }
 
@@ -45,12 +56,10 @@ const mapDispatch = dispatch => {
   }
 }
 
-export default connect(mapState, mapDispatch)(Navbar)
-
-/**
- * PROP TYPES
- */
 Navbar.propTypes = {
   handleClick: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired
 }
+
+export default connect(mapState, mapDispatch)(Navbar)

@@ -42,7 +42,7 @@ const Product = db.define('product', {
   },
   type: {
     type: Sequelize.ENUM,
-    values: ['gluten-free', 'whole-wheat', ' semolina'],
+    values: ['gluten-free', 'whole-wheat', 'semolina'],
     allowNull: false,
     validate: {
       notEmpty: true

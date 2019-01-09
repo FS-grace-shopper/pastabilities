@@ -37,9 +37,9 @@ export const fetchProducts = () => async dispatch => {
     console.error(err)
   }
 }
-export const searchProductsName = pastaName => async dispatch => {
+export const searchProductsName = searchString => async dispatch => {
   try {
-    const {data} = await axios.get(`/api/products/search/${pastaName}`)
+    const {data} = await axios.get(`/api/products/search/${searchString}`)
     dispatch(getProducts(data))
   } catch (err) {
     console.error(err)
@@ -47,7 +47,7 @@ export const searchProductsName = pastaName => async dispatch => {
 }
 export const fetchProduct = productId => async dispatch => {
   try {
-    const {data} = await axios.get(`/api/product/${productId}`)
+    const {data} = await axios.get(`/api/products/${productId}`)
     dispatch(getProduct(data))
   } catch (err) {
     console.error(err)
@@ -110,7 +110,7 @@ export default function(state = initialState, action) {
     case GET_PRODUCT:
       return {...state, currentProduct: action.product}
     case ADD_PRODUCT:
-      return {...state, allProducts: [...allProducts, action.product]}
+      return {...state, allProducts: [...state.allProducts, action.product]}
     case EDIT_PRODUCT:
       return {
         ...state,

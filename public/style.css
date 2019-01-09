@@ -19,3 +19,85 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.title-area {
+  font-size: 2em;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 85vw;
+}
+
+.listbox {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.item {
+  border: 1px solid black;
+  width: 333px;
+  flex-direction: column;
+  margin: 5px;
+  padding: 5px;
+  align-items: center;
+}
+.description p {
+  text-align: center;
+  width: 100%;
+}
+.product-name a {
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+}
+
+/* form */
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 2;
+  margin: 1em;
+  margin-left: 15%;
+  width: 65vw;
+  text-align: left;
+}
+
+form input {
+  padding: 0.3em;
+  margin: 0.5em 0;
+  font-size: 1em;
+  width: 100%;
+}
+
+form select {
+  width: 30em;
+}
+
+form button:disabled {
+  background-color: #ccc;
+}
+form button:disabled:hover {
+  background-color: #ccc;
+}
+
+/* Messages */
+.error {
+  padding: 1em 2em;
+  font-size: 1em;
+  letter-spacing: 0.1em;
+  background-color: red;
+  color: white;
+  margin-top: 1em;
+}
+
+.warning {
+  padding: 0 0.5em;
+  font-size: 1em;
+  letter-spacing: 0.1em;
+  background-color: orange;
+  color: white;
+  margin-left: 1em;
+}
