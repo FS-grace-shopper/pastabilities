@@ -62,9 +62,21 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
+const isAdmin = (req, res, next) => {
+  if (!req.user || !req.user.isAdmin) {
+    return res.sendStatus(403)
+  }
+  next()
+}
+
 //create new product in database
-router.post('/', async (req, res, next) => {
-  const {name, description, price, quantity, image, type, shape} = req.body.data
+router.post('/', isAdmin, async (req, res, next) => {
+  // console.log('USER IS', req.user.isAdmin)
+  // if (!req.user || !req.user.isAdmin) {
+  //   return res.sendStatus(403)
+  // }
+  // console.log('PASTING A NEW PASTA', req.body)
+  const {name, description, price, quantity, image, type, shape} = req.body
 
   try {
     newProduct = await Product.create({
