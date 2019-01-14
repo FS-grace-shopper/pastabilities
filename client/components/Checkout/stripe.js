@@ -15,8 +15,8 @@ class TakeMoney extends React.Component {
   }
 
   // ...
-
   render() {
+    console.log(this.onClosed)
     const publishableKey = 'pk_test_DUbKNX2jBsDxZV2i0McVhWe6'
     return (
       <StripeCheckout

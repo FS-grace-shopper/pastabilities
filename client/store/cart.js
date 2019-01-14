@@ -20,6 +20,7 @@ const initialState = {
 }
 // {
 
+// You could make a middleware function that updates localStorage here
 /**
  * REDUCER
  */

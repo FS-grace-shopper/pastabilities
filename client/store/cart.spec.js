@@ -7,7 +7,7 @@ const mockStore = configureMockStore()
 
 import {createStore} from 'redux'
 
-describe.only('Cart Action creators', () => {
+describe('Cart Action creators', () => {
   let store
 
   const oneProduct = {
