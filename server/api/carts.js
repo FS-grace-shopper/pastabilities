@@ -12,6 +12,13 @@ const isAdmin = (req, res, next) => {
     next()
   }
 }
+const isUser = (req, res, next) => {
+  if (!req.user) {
+    return res.sendStatus(403)
+  } else {
+    next()
+  }
+}
 
 //get all carts from 'Cart' Table -- for admins only
 router.get('/', isAdmin, async (req, res, next) => {
@@ -23,32 +30,41 @@ router.get('/', isAdmin, async (req, res, next) => {
   }
 })
 
-//get single cart by sessionId -- EAGER LOAD PRODUCTS
-router.get('/:sessionId', async (req, res, next) => {
-  try {
-    const sessionId = req.params.sessionId
-    const singleCart = await Cart.findOne({
-      where: {
-        sessionId
-      },
-      include: [Product]
-    })
-    res.json(singleCart)
-  } catch (err) {
-    next(err)
+// get single cart by userId -- EAGER LOAD PRODUCTS
+router.get('/users/:userId', async (req, res, next) => {
+  const userId = req.params.userId
+  //check admin or user here
+  if (isAdmin || req.user.id === userId) {
+    try {
+      const singleCart = await Cart.findOne({
+        where: {
+          userId
+        },
+        include: [Product]
+      })
+
+      res.json(singleCart)
+    } catch (err) {
+      next(err)
+    }
   }
 })
 
-//add or get cart by sessionId
-router.post('/:sessionId', async (req, res, next) => {
-  try {
-    const sessionId = req.params.sessionId
-    console.log(req.session)
-    //maybe use req.session eventually?
-    const [instance, wasCreated] = await Cart.findOrCreate({where: {sessionId}})
-    res.json(instance)
-  } catch (err) {
-    next(err)
+//add or get cart by userId
+router.post('/users/:userId', async (req, res, next) => {
+  const userId = req.params.userId
+  //check admin or user here
+  if (isAdmin || req.user.id === userId) {
+    try {
+      //maybe use req.user eventually?
+      const [instance, wasCreated] = await Cart.findOrCreate({
+        where: {userId},
+        include: [Product]
+      })
+      res.json(instance)
+    } catch (err) {
+      next(err)
+    }
   }
 })
 
@@ -58,6 +74,8 @@ router.post('/:cartId/:productId', async (req, res, next) => {
     const cartId = +req.params.cartId
     const productId = +req.params.productId
     const productAddQty = +req.body.quantity
+    console.log(req.body)
+
     //maybe use req.session eventually?
     if (productAddQty > 0) {
       const [instance, wasCreated] = await cartProduct.findOrCreate({
@@ -66,6 +84,7 @@ router.post('/:cartId/:productId', async (req, res, next) => {
           productId
         }
       })
+
       if (!wasCreated) {
         await instance.update({quantity: instance.quantity + productAddQty})
       } else {
@@ -114,23 +133,8 @@ router.put('/:cartId/:productId', async (req, res, next) => {
   }
 })
 
-//delete cart in database by sessionId
-router.delete('/session/:sessionId', (req, res, next) => {
-  try {
-    const sessionId = req.params.sessionId
-    Cart.destroy({
-      where: {
-        sessionId
-      }
-    })
-    res.sendStatus(204)
-  } catch (err) {
-    next(err)
-  }
-})
-
 //delete cart in database by userId
-router.delete('/user/:userId', (req, res, next) => {
+router.delete('/users/:userId', (req, res, next) => {
   try {
     const userId = req.params.userId
     Cart.destroy({

@@ -5,7 +5,7 @@ import {withStyles} from '@material-ui/core/styles'
 import {connect} from 'react-redux'
 import {
   fetchProduct,
-  addToCart,
+  addWithUser,
   removeFromCart,
   changeQuantity,
   destroyProduct
@@ -25,7 +25,7 @@ class singleProduct extends Component {
 
   render() {
     const {currentProduct, classes, userId} = this.props
-
+    console.log('logged in user is', userId)
     let alreadyReviewed = false
     if (currentProduct.reviews) {
       if (
@@ -92,7 +92,7 @@ class singleProduct extends Component {
             <Button
               size="small"
               color="primary"
-              onClick={() => this.props.addToCart(this.props.currentProduct)}
+              onClick={() => this.props.addToCart(currentProduct, userId)}
             >
               Add to Cart
             </Button>
@@ -170,11 +170,18 @@ const mapStateToProps = state => {
 
 const mapDispatchtoProps = dispatch => {
   return {
-    fetchProduct: id => dispatch(fetchProduct(id)),
-    addToCart: product => dispatch(addToCart(product)),
-    removeFromCart: product => dispatch(removeFromCart(product)),
-    changeQuantity: (product, quantity) =>
-      dispatch(changeQuantity(product, quantity)),
+    fetchProduct: id => {
+      dispatch(fetchProduct(id))
+    },
+    addToCart: (product, userId) => {
+      dispatch(addWithUser(product, userId))
+    },
+    removeFromCart: product => {
+      dispatch(removeFromCart(product))
+    },
+    changeQuantity: (product, quantity) => {
+      dispatch(changeQuantity(product, quantity))
+    },
     destroyProduct: id => {
       dispatch(destroyProduct(id))
     }

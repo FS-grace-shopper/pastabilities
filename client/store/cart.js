@@ -13,7 +13,25 @@ export const removeFromCart = product => ({type: REMOVE_FROM_CART, product})
 export const getGuestCart = () => ({type: GET_GUEST_CART})
 
 /*** THUNK CREATORS***/
+export const addWithUser = (product, userId) => async dispatch => {
+  //find cart in database associated with userId in redux store
+  let cart
+  if (userId) {
+    cart = await axios.get(`/api/carts/users/${userId}`)
+  }
+  if (cart) {
+    await axios.post(`/api/carts/${cart.data.id}/${product.id}`, {
+      quantity: 1
+    })
+  }
 
+  dispatch(addToCart(product))
+}
+
+// export const mergeCart = (id) => async dispatch => {
+//     const userCart = await axios.get(`/api/carts/users/${id}`);
+//     if
+// }
 /*** INITIAL STATE***/
 const initialState = {
   cart: []
