@@ -307,12 +307,12 @@ async function seed() {
   console.log('db synced!')
 
   const [product, user, review, order, orderproduct, cart] = await Promise.all([
+    Order.bulkCreate(dummyOrders, {returning: true}),
     Product.bulkCreate(pastaProduct, {returning: true}),
     User.bulkCreate(dummyUsers, {individualHooks: true, returning: true}),
-    Review.bulkCreate(dummyReviews, {returning: true}),
-    Order.bulkCreate(dummyOrders, {returning: true}),
-    orderProduct.bulkCreate(dummyOrderProducts, {returning: true}),
     Cart.bulkCreate(dummyCarts, {returning: true}),
+    Review.bulkCreate(dummyReviews, {returning: true}),
+    orderProduct.bulkCreate(dummyOrderProducts, {returning: true}),
     cartProduct.bulkCreate(dummyCartProducts, {returning: true})
   ])
   const [pasta1, pasta2, pasta3, pasta4, pasta5, pasta6] = product
